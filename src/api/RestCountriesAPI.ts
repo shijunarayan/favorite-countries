@@ -1,22 +1,47 @@
+import axios from 'axios';
 import apiUrls from "../apiConfig";
 import { Country } from "../types/Country";
 
-// const delay = (ms: any) => new Promise(res => setTimeout(res, ms)); // Added to test loading spinner
-
 export const fetchCountries = async (name: string) => {
-  const endpoint = `${apiUrls.restcountriesUrl}${name}?fields=name;flag;numericCode`;
-  // await delay(300);
-  return fetch(endpoint).then(async function (response) {
-    if (!response.ok) {
-      // make the promise be rejected if we didn't get a 2xx response
-      throw new Error("No countries found");
-    } else {
-      const jsonRes = await response.json();
-      return jsonRes.map((country: Country) => ({
-        name: country.name,
-        flag: country.flag,
-        numericCode: country.numericCode
-      }));
-    }
-  })
+  // Fetch Rest Countries from thirdparty API
+  let restCountries: Country[] = [];
+  await fetchRestCountries(name)
+    .then(res => { restCountries = res.data })
+    .catch(err => console.log(err));
+
+  // Fetch Supplimental Countries from our Backend API
+  let supplCountries: Country[] = [];
+  await fetchSupplementalCountries(name)
+    .then(res => { supplCountries = res.data })
+    .catch(err => console.log(err));
+
+  // Replace duplicate countries from restCountries and supplementCountries with country from supplementCountries
+  const uniqueRestCountries = Array.from(new Set(restCountries.map(a => a.name)))
+    .map(name => {
+      return supplCountries.find(a => a.name === name) ?? restCountries.find(a => a.name === name)
+    })
+
+  // Combine Rest Countries and Supplimental Countries
+  const combinedCountries = [...uniqueRestCountries, ...supplCountries];
+
+  // If return data is empty throw an exception
+  if (name && combinedCountries.length === 0) {
+    throw new Error(`No countries found for input: ${name}`);
+  }
+
+  return combinedCountries;
+}
+
+export const fetchRestCountries = async (name: string) => {
+  return axios({
+    method: 'GET',
+    url: `${apiUrls.restcountriesUrl}${name}?fields=name;flag;numericCode`
+  });
+}
+
+export const fetchSupplementalCountries = async (name: string) => {
+  return axios({
+    method: 'GET',
+    url: `${apiUrls.supplementalCountriesUrl}${name}`
+  });
 }

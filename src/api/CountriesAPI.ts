@@ -29,6 +29,6 @@ export const deleteCountry = (country: Country) => {
       url: `${apiUrls.countriesUrl}${country.id}/`,
     });
   } else {
-    return Promise.reject('Country is not valid');;
+    throw new Error('Country is not valid');
   }
 }

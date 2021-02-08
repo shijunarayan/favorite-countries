@@ -40,6 +40,7 @@ const Search: React.FC<Props> = ({ countryList, pinnedCountries, setCountryList,
         setSavingFavorites(false);
       })
       .catch((error) => {
+        console.log('My', error);
         setCountryList([]);
         setErrorMessage(error.toString());
         setLoading(false);
