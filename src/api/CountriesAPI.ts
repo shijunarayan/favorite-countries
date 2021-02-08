@@ -22,9 +22,13 @@ export const saveCountry = (country: Country) => {
 }
 
 
-export const deleteCountry = (id: number) => {
-  return axios({
-    method: 'DELETE',
-    url: `${apiUrls.countriesUrl}${id}/`,
-  });
+export const deleteCountry = (country: Country) => {
+  if (country) {
+    return axios({
+      method: 'DELETE',
+      url: `${apiUrls.countriesUrl}${country.id}/`,
+    });
+  } else {
+    return Promise.reject('Country is not valid');;
+  }
 }
