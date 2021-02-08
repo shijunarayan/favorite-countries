@@ -1,9 +1,12 @@
 # Getting Started with AdmitHub Coding Exercise
+#### This is the frontend ui for the coding exercise
+
+---
 
 Get the project from my GitHub repository: email me @ shijunarayan@gmail.com to get access to this repo
 
 - git clone `git@github.com:shijunarayan/admithub-coding-exercise-ui.git`
-- cd into the director `admithub-coding-exercise-ui`
+- cd into the directory `admithub-coding-exercise-ui`
 - run `npm install`
 - run `npm run build`
 - run `npm run start`
