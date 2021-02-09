@@ -78,7 +78,11 @@ const Search: React.FC<Props> = ({ countryList, pinnedCountries, setCountryList,
 
   // DRY: Function used by handlePinCountries and CountryListItem to check if the given country is pinned or not
   const isNotPinned = (numericCode: number | string | null) => {
-    return !pinnedCountries.find((e: any) => { return e.numericCode.toString().padStart(3, '0') === numericCode });
+    if (typeof numericCode === 'number') {  //Bug-fix: Our backend returns int, while restcountries return numericCOde as string
+      return !pinnedCountries.find((e: any) => { return e.numericCode === numericCode });
+    } else {
+      return !pinnedCountries.find((e: any) => { return e.numericCode.toString().padStart(3, '0') === numericCode });
+    }
   }
 
   return (

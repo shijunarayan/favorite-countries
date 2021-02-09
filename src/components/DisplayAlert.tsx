@@ -11,7 +11,7 @@ export interface Props {
 
 const DisplayAlert: React.FC<Props> = ({ loading, errorMessage }) => {
   return (
-    <div className="m-5">
+    <div className="mt-5">
       {
         loading ?
           <Alert variant="success"><Spinner animation="border" /> Loading ...</Alert>
