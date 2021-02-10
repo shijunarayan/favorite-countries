@@ -1,7 +1,15 @@
-const apiUrls = {
-  supplementalCountriesUrl: 'http://127.0.0.1:8000/supplemental/countries/',
+let apiUrls = {
+  supplementalCountriesUrl: 'https://admithub-suppl-countries.herokuapp.com/supplemental/countries/',
   restcountriesUrl: 'https://restcountries.eu/rest/v2/name/',
-  countriesUrl: 'http://127.0.0.1:8000/pinned/countries/',
+  countriesUrl: 'https://admithub-suppl-countries.herokuapp.com/pinned/countries/',
 }
 
-export default apiUrls;
+if (window.location.hostname === 'localhost') {
+  apiUrls = {
+    supplementalCountriesUrl: 'http://127.0.0.1:8000/supplemental/countries/',
+    restcountriesUrl: 'https://restcountries.eu/rest/v2/name/',
+    countriesUrl: 'http://127.0.0.1:8000/pinned/countries/',
+  }
+}
+
+export default apiUrls
